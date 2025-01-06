@@ -1,11 +1,9 @@
-// orderRoutes.js
 const express = require('express');
 const Order = require('../models/Order');
 const { protectUser, protectAdmin } = require('../middlewares/authMiddleware');
 const User = require('../models/User');
 const router = express.Router();
 
-// Route to create an order (protected by user authentication)
 router.post('/create', protectUser, async (req, res) => {
   const { items, total } = req.body;
   
@@ -24,7 +22,6 @@ router.post('/create', protectUser, async (req, res) => {
   }
 });
 
-// Cancel an order (only by the user who created it)
 router.patch('/cancel/:id', protectUser, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -47,7 +44,6 @@ router.patch('/cancel/:id', protectUser, async (req, res) => {
   }
 });
 
-// Route for admin to view messages (Contact Us)
 router.get('/messages', protectAdmin, async (req, res) => {
   try {
     const users = await User.find({ role: 'user' });

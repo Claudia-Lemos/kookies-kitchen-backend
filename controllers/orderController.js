@@ -1,26 +1,3 @@
-// // orderController.js
-// const updateOrderStatus = async (req, res) => {
-//   const { status } = req.body;
-//   const { orderId } = req.params;
-
-//   if (!['accepted', 'rejected'].includes(status)) {
-//     return res.status(400).json({ message: 'Invalid status' });
-//   }
-
-//   try {
-//     const order = await Order.findById(orderId);
-//     if (!order) {
-//       return res.status(404).json({ message: 'Order not found' });
-//     }
-
-//     order.status = status;
-//     await order.save();
-//     res.json(order);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Error updating order status' });
-//   }
-// };
-
 const cancelOrder = async (req, res) => {
   const { orderId } = req.params;
 
@@ -35,7 +12,7 @@ const cancelOrder = async (req, res) => {
     }
 
     order.status = 'cancelled';
-    order.cancelled = true; // Set the cancellation flag
+    order.cancelled = true; 
     await order.save();
     res.json(order);
   } catch (error) {
@@ -43,4 +20,4 @@ const cancelOrder = async (req, res) => {
   }
 };
 
-module.exports = { updateOrderStatus, cancelOrder }; // Ensure you export the new function
+module.exports = { updateOrderStatus, cancelOrder }; 

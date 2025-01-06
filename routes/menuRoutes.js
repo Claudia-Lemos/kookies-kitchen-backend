@@ -1,4 +1,3 @@
-// menuRoutes.js
 const express = require('express');
 const MenuItem = require('../models/MenuItem');
 const router = express.Router();

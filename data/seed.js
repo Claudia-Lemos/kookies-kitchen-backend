@@ -1,63 +1,3 @@
-// // seed.js
-// require('dotenv').config();
-// const mongoose = require('mongoose');
-// const bcrypt = require('bcryptjs');
-// const User = require('../models/User');
-
-// // Hash the passwords before saving
-// const hashPassword = async (password) => {
-//   const salt = await bcrypt.genSalt(10);
-//   return bcrypt.hash(password, salt);
-// };
-
-// // Create admin user if it doesn't exist
-// const createAdmin = async () => {
-//   const adminExists = await User.findOne({ email: 'admin@kookieskitchen.com' });
-//   if (!adminExists) {
-//     const hashedPassword = await hashPassword('adminpassword'); // Default admin password
-//     const admin = new User({
-//       email: 'admin@kookieskitchen.com',
-//       password: hashedPassword,
-//       role: 'admin',
-//     });
-//     await admin.save();
-//     console.log('Admin user created successfully!');
-//   }
-// };
-
-// // Create a regular user if it doesn't exist
-// const createUser = async () => {
-//   const userExists = await User.findOne({ email: 'user@kookieskitchen.com' });
-//   if (!userExists) {
-//     const hashedPassword = await hashPassword('userpassword'); // Default user password
-//     const user = new User({
-//       email: 'user@kookieskitchen.com',
-//       password: hashedPassword,
-//       role: 'user',
-//     });
-//     await user.save();
-//     console.log('Regular user created successfully!');
-//   }
-// };
-
-// // Connect to DB and seed the users
-// mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(async () => {
-//     console.log('Connected to DB');
-
-//     // Create admin and regular users
-//     await createAdmin();
-//     await createUser();
-
-//     // Close the DB connection after seeding
-//     process.exit();
-//   })
-//   .catch(err => {
-//     console.error('Error during data seeding:', err);
-//     process.exit(1);
-//   });
-
-// seed.js
 require('dotenv').config();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
@@ -119,7 +59,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
     await createAdmin();
     await createUsers();
 
-    // Close the DB connection after seeding
+  // Close the DB connection after seeding
     process.exit();
   })
   .catch(err => {

@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, required: true, default: 'user' }, // Default role is 'user'
-  messages: [{ type: String }], // Store messages sent by the user (e.g. contact us)
+  messages: [{ type: String }], // Store messages sent by the user (contact us)
 });
 
 // Compare password method

@@ -1,5 +1,3 @@
-// routes/authRoutes.js
-
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -52,7 +50,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: '2h' } // Increase expiry to 2 hours
+      { expiresIn: '2h' }
     );
 
     res.json({
@@ -64,7 +62,7 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Login error:', error); // Log the full error details
+    console.error('Login error:', error); 
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
