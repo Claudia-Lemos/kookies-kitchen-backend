@@ -1,23 +1,23 @@
-const cancelOrder = async (req, res) => {
-  const { orderId } = req.params;
+const Order = require('../models/Order');
+
+// Function to place an order
+const placeOrder = async (req, res) => {
+  const { items, totalAmount, userEmail } = req.body;
 
   try {
-    const order = await Order.findById(orderId);
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
+    const order = new Order({
+      items,
+      totalAmount,
+      userEmail,
+      status: 'pending', // Initial status
+    });
 
-    if (order.status === 'cancelled') {
-      return res.status(400).json({ message: 'Order is already cancelled' });
-    }
-
-    order.status = 'cancelled';
-    order.cancelled = true; 
-    await order.save();
-    res.json(order);
+    const savedOrder = await order.save();
+    res.status(201).json(savedOrder); // Return the created order as a response
   } catch (error) {
-    res.status(500).json({ message: 'Error cancelling order' });
+    console.error('Error placing order:', error);
+    res.status(500).json({ message: 'Error placing order', error: error.message });
   }
 };
 
-module.exports = { updateOrderStatus, cancelOrder }; 
+module.exports = { placeOrder };

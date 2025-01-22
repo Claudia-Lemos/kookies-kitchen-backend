@@ -1,56 +1,36 @@
 const express = require('express');
-const Order = require('../models/Order');
-const { protectUser, protectAdmin } = require('../middlewares/authMiddleware');
-const User = require('../models/User');
+const { protectUser } = require('../middlewares/authMiddleware');  // Correct import path
+const Order = require('../models/Order');  // Ensure Order model path is correct
 const router = express.Router();
 
-router.post('/create', protectUser, async (req, res) => {
-  const { items, total } = req.body;
+// Route to create a new order
+router.post('/', protectUser, async (req, res) => {
+  console.log('User from token:', req.user); // Debug log for user info (remove in production)
+
+  const { items, totalPrice } = req.body;
   
+  // Validate incoming request body
+  if (!items || items.length === 0) {
+    return res.status(400).json({ message: 'No items in the order' });
+  }
+
   try {
+    // Create a new order object
     const order = new Order({
-      userId: req.user.id,
-      items,
-      total,
+      userId: req.user._id, // Store the user ID from JWT
+      items,  // Order items
+      total: totalPrice, // Order total price
     });
 
+    // Save the order to the database
     await order.save();
+    
+    // Respond with the created order
     res.status(201).json(order);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error creating order' });
-  }
-});
-
-router.patch('/cancel/:id', protectUser, async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id);
-
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
-
-    if (order.userId.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Not authorized to cancel this order' });
-    }
-
-    order.status = 'cancelled';
-    await order.save();
-
-    res.json({ message: 'Order cancelled successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error cancelling order' });
-  }
-});
-
-router.get('/messages', protectAdmin, async (req, res) => {
-  try {
-    const users = await User.find({ role: 'user' });
-    const messages = users.map(user => user.messages).flat();
-    res.json(messages);
-  } catch (error) {
-    res.status(500).json({ message: 'Error fetching messages' });
+    console.error('Error placing order:', error);
+    // Provide error message with the error details
+    res.status(500).json({ message: 'Error placing order', error: error.message });
   }
 });
 
