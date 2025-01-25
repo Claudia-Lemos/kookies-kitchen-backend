@@ -27,7 +27,6 @@ router.post('/:email', protectUser, async (req, res) => {
 
   console.log('Received request to add item:', { email, itemId, quantity });  // Log incoming data
 
-  // Check if itemId and quantity are valid
   if (!itemId || !mongoose.Types.ObjectId.isValid(itemId)) {
     return res.status(400).json({ message: 'Invalid Item ID' });
   }
@@ -66,7 +65,7 @@ router.post('/:email', protectUser, async (req, res) => {
     console.log('Cart updated successfully:', cart);
     res.status(200).json(cart);
   } catch (error) {
-    console.error('Error adding item to cart:', error.message);
+    console.error('Error adding item to cart:', error);
     res.status(500).json({ message: 'Error adding item to cart', error: error.message });
   }
 });
