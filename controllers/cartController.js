@@ -17,7 +17,6 @@ const addItemToCart = async (req, res) => {
 
   try {
     // Check if the item exists in the MenuItems collection
-    console.log('MenuItem:', MenuItem);
     const menuItem = await MenuItem.findById(itemId);
     console.log('Found Menu Item:', menuItem);
 
@@ -43,12 +42,12 @@ const addItemToCart = async (req, res) => {
       }
     }
 
-    // Save the cart, skipping schema validation
+    // Save the cart
     await cart.save({ validateBeforeSave: false });
 
     res.status(200).json(cart);
   } catch (error) {
-    console.error('Error adding item to cart:', error);  // Log the full error object
+    console.error('Error adding item to cart:', error);
     res.status(500).json({ message: 'Error adding item to cart', error: error.message });
   }
 };

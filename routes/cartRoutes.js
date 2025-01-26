@@ -3,6 +3,7 @@ const mongoose = require('mongoose');  // Added mongoose import
 const { protectUser } = require('../middlewares/authMiddleware');  // Import protectUser middleware
 const Cart = require('../models/Cart');
 const router = express.Router();
+const MenuItem = require("../models/MenuItem")
 
 // GET cart for a specific user
 router.get('/:email', protectUser, async (req, res) => {
